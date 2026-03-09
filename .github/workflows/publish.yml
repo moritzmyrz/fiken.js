@@ -1,0 +1,55 @@
+name: Publish package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+      - run: npm test --if-present
+      - run: npm run build --if-present
+
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-github-packages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: '@moritzmyrz'
+
+      - run: npm ci
+      - run: npm test --if-present
+      - run: npm run build --if-present
+
+      - name: Rewrite package name for GitHub Packages
+        run: |
+          node -e "const fs=require('fs'); const pkg=require('./package.json'); pkg.name='@moritzmyrz/fiken.js'; pkg.publishConfig={registry:'https://npm.pkg.github.com'}; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2)+'\n');"
+
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
