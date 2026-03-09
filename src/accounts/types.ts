@@ -3,4 +3,5 @@ export interface AccountsParams {
 	pageSize?: number;
 	fromAccount?: string;
 	toAccount?: string;
+	range?: string;
 }

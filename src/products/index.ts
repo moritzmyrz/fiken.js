@@ -4,12 +4,14 @@ import {
 	productSalesReportRequest,
 	productSalesReportResult,
 } from '../schemas';
+import { ProductsParams } from './types';
 
 const resourceName = 'products';
 
 export class Products extends Base {
-	getProducts() {
-		return this.request<product[]>(`/${resourceName}`);
+	getProducts(params?: ProductsParams) {
+		const query = new URLSearchParams(this.prepareParamsForURLSearch(params)).toString();
+		return this.request<product[]>(`/${resourceName}${query ? `?${query}` : ''}`);
 	}
 
 	createProduct(product: product) {

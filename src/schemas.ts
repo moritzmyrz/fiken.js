@@ -27,6 +27,26 @@ export interface account {
 	name?: string;
 }
 
+export interface activityRequest {
+	name: string;
+	hourlyRate?: number;
+	productId?: number;
+	billable?: boolean;
+	description?: string;
+	projectId?: number;
+}
+
+export interface activityResult {
+	activityId?: number;
+	name?: string;
+	hourlyRate?: number;
+	product?: product;
+	billable?: boolean;
+	description?: string;
+	project?: projectResult;
+	archived?: boolean;
+}
+
 export interface address {
 	country: string;
 
@@ -67,6 +87,14 @@ export interface bankAccountResult {
 	reconciledBalance?: number;
 	reconciledDate?: string;
 	inactive?: boolean;
+}
+
+export interface bankBalanceResult {
+	source?: string;
+	bankAccountId?: number;
+	bankAccountCode?: string;
+	date?: string;
+	amount?: number;
 }
 
 export interface company {
@@ -699,6 +727,58 @@ export interface transaction {
 	entries?: journalEntry[];
 }
 
+export interface timeEntryInvoiceDraftRequest {
+	timeEntryIds: number[];
+	customerId: number;
+	daysUntilDueDate: number;
+	groupBy?: 'activity' | 'activityAndPerson' | 'none';
+	includeTimeEntryDescriptions?: boolean;
+	issueDate?: string;
+	projectId?: number;
+	invoiceText?: string;
+	yourReference?: string;
+	ourReference?: string;
+	orderReference?: string;
+	currency?: string;
+	bankAccountNumber?: string;
+}
+
+export interface timeEntryRequest {
+	date: string;
+	hours: number;
+	activityId: number;
+	timeUserId: number;
+	startTime?: string;
+	description?: string;
+	internalNote?: string;
+	projectId?: number;
+}
+
+export interface timeEntryResult {
+	timeEntryId?: number;
+	date?: string;
+	hours?: number;
+	startTime?: string;
+	endTime?: string;
+	description?: string;
+	internalNote?: string;
+	activity?: activityResult;
+	project?: projectResult;
+	timeUser?: timeUserResult;
+	invoiced?: boolean;
+	locked?: boolean;
+	createdDate?: string;
+	lastModifiedDate?: string;
+}
+
+export interface timeUserResult {
+	timeUserId?: number;
+	name?: string;
+	email?: string;
+	createdDate?: string;
+	lastModifiedDate?: string;
+}
+
 export interface updateInvoiceRequest {
 	newDueDate?: string;
 	sentManually?: boolean;
@@ -711,6 +791,25 @@ export interface updateProjectRequest {
 	endDate?: string;
 	contactId?: number;
 	completed?: boolean;
+}
+
+export interface updateActivityRequest {
+	name?: string;
+	hourlyRate?: number;
+	productId?: number;
+	billable?: boolean;
+	description?: string;
+	projectId?: number;
+}
+
+export interface updateTimeEntryRequest {
+	date?: string;
+	hours?: number;
+	startTime?: string;
+	description?: string;
+	internalNote?: string;
+	activityId?: number;
+	projectId?: number;
 }
 
 export interface userinfo {

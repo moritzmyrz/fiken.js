@@ -1,6 +1,17 @@
-export interface AccountsParams {
+export interface ProductsParams {
 	page?: number;
 	pageSize?: number;
-	fromAccount?: string;
-	toAccount?: string;
+	createdDate?: string;
+	createdDateLe?: string;
+	createdDateLt?: string;
+	createdDateGe?: string;
+	createdDateGt?: string;
+	lastModified?: string;
+	lastModifiedLe?: string;
+	lastModifiedLt?: string;
+	lastModifiedGe?: string;
+	lastModifiedGt?: string;
+	name?: string;
+	productNumber?: string;
+	active?: boolean;
 }

@@ -1,9 +1,30 @@
 import { Base } from '../base';
 import { contact, contactPerson } from '../schemas';
+import { Pagination } from '../base';
+
+type ContactsParams = Pagination & {
+	lastModified?: string;
+	lastModifiedLe?: string;
+	lastModifiedLt?: string;
+	lastModifiedGe?: string;
+	lastModifiedGt?: string;
+	createdDate?: string;
+	createdDateLe?: string;
+	createdDateLt?: string;
+	createdDateGe?: string;
+	createdDateGt?: string;
+	supplierNumber?: number;
+	customerNumber?: number;
+	organizationNumber?: string;
+	memberNumber?: string;
+	name?: string;
+	email?: string;
+};
 
 export class Contacts extends Base {
-	getContacts() {
-		return this.request<contact[]>('/contacts');
+	getContacts(params?: ContactsParams) {
+		const query = new URLSearchParams(this.prepareParamsForURLSearch(params)).toString();
+		return this.request<contact[]>(`/contacts${query ? `?${query}` : ''}`);
 	}
 
 	createContact(contact: contact) {
