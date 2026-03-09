@@ -18,14 +18,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/foey-as/fiken.js.git"
+		"url": "git+https://github.com/moritzmyrz/fiken.js.git"
 	},
-	"author": "Moritz André Myrseth <moritz@foey.no>",
+	"author": "Moritz André Myrseth <moritzmyrz@gmail.com>",
 	"bugs": {
-		"url": "https://github.com/foey-as/fiken.js/issues"
+		"url": "https://github.com/moritzmyrz/fiken.js/issues"
 	},
 	"license": "MPL-2.0",
-	"homepage": "https://github.com/foey-as/fiken.js#readme",
+	"homepage": "https://github.com/moritzmyrz/fiken.js#readme",
 	"devDependencies": {
 		"@types/jest": "^30.0.0",
 		"@typescript-eslint/eslint-plugin": "^8.56.1",
