@@ -1,35 +1,144 @@
 import { Base } from '../base';
+import { Pagination } from '../base';
+import {
+	attachment,
+	draftRequest,
+	draftResult,
+	payment,
+	purchaseRequest,
+	purchaseResult,
+} from '../schemas';
+
+type PurchasesParams = Pagination & {
+	date?: string;
+	dateLe?: string;
+	dateLt?: string;
+	dateGe?: string;
+	dateGt?: string;
+	lastModified?: string;
+	lastModifiedLe?: string;
+	lastModifiedLt?: string;
+	lastModifiedGe?: string;
+	lastModifiedGt?: string;
+	createdDate?: string;
+	createdDateLe?: string;
+	createdDateLt?: string;
+	createdDateGe?: string;
+	createdDateGt?: string;
+};
+
+type DraftListParams = Pagination & {
+	lastModified?: string;
+	lastModifiedLe?: string;
+	lastModifiedLt?: string;
+	lastModifiedGe?: string;
+	lastModifiedGt?: string;
+};
+
+const resourceName = 'purchases';
 
 export class Purchases extends Base {
-	getPurchases() {}
+	getPurchases(params?: PurchasesParams) {
+		const query = new URLSearchParams(this.prepareParamsForURLSearch(params)).toString();
+		return this.request<purchaseResult[]>(
+			`${resourceName}${query ? `?${query}` : ''}`
+		);
+	}
 
-	createPurchase() {}
+	createPurchase(purchase: purchaseRequest) {
+		return this.request<void>(resourceName, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(purchase),
+		});
+	}
 
-	getPurchase() {}
+	getPurchase(purchaseId: number) {
+		return this.request<purchaseResult>(`${resourceName}/${purchaseId}`);
+	}
 
-	getPurchaseAttachments() {}
+	deletePurchase(purchaseId: number, description: string) {
+		const query = new URLSearchParams({ description }).toString();
+		return this.request<purchaseResult>(
+			`${resourceName}/${purchaseId}/delete?${query}`,
+			{ method: 'PATCH' }
+		);
+	}
 
-	createPurchaseAttachment() {}
+	getPurchaseAttachments(purchaseId: number) {
+		return this.request<attachment[]>(`${resourceName}/${purchaseId}/attachments`);
+	}
 
-	getPurchasePayments() {}
+	createPurchaseAttachment(purchaseId: number, formData: FormData) {
+		return this.request<void>(`${resourceName}/${purchaseId}/attachments`, {
+			method: 'POST',
+			body: formData,
+		});
+	}
 
-	createPurchasePayment() {}
+	getPurchasePayments(purchaseId: number) {
+		return this.request<payment[]>(`${resourceName}/${purchaseId}/payments`);
+	}
 
-	getPurchasePayment() {}
+	createPurchasePayment(purchaseId: number, purchasePayment: payment) {
+		return this.request<void>(`${resourceName}/${purchaseId}/payments`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(purchasePayment),
+		});
+	}
 
-	getPurchaseDrafts() {}
+	getPurchasePayment(purchaseId: number, paymentId: number) {
+		return this.request<payment>(
+			`${resourceName}/${purchaseId}/payments/${paymentId}`
+		);
+	}
 
-	createPurchaseDraft() {}
+	getPurchaseDrafts(params?: DraftListParams) {
+		const query = new URLSearchParams(this.prepareParamsForURLSearch(params)).toString();
+		return this.request<draftResult[]>(`${resourceName}/drafts${query ? `?${query}` : ''}`);
+	}
 
-	getPurchaseDraft() {}
+	createPurchaseDraft(draft: draftRequest) {
+		return this.request<void>(`${resourceName}/drafts`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(draft),
+		});
+	}
 
-	updatePurchaseDraft() {}
+	getPurchaseDraft(draftId: number) {
+		return this.request<draftResult>(`${resourceName}/drafts/${draftId}`);
+	}
 
-	deletePurchaseDraft() {}
+	updatePurchaseDraft(draftId: number, draft: draftRequest) {
+		return this.request<void>(`${resourceName}/drafts/${draftId}`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(draft),
+		});
+	}
 
-	getPurchaseDraftAttachments() {}
+	deletePurchaseDraft(draftId: number) {
+		return this.request<void>(`${resourceName}/drafts/${draftId}`, {
+			method: 'DELETE',
+		});
+	}
 
-	createPurchaseDraftAttachment() {}
+	getPurchaseDraftAttachments(draftId: number) {
+		return this.request<attachment[]>(`${resourceName}/drafts/${draftId}/attachments`);
+	}
 
-	createPurchaseFromDraft() {}
+	createPurchaseDraftAttachment(draftId: number, formData: FormData) {
+		return this.request<void>(`${resourceName}/drafts/${draftId}/attachments`, {
+			method: 'POST',
+			body: formData,
+		});
+	}
+
+	createPurchaseFromDraft(draftId: number) {
+		return this.request<void>(`${resourceName}/drafts/${draftId}/createPurchase`, {
+			method: 'POST',
+		});
+	}
 }

@@ -9,4 +9,10 @@ export class Transactions extends Base {
 	getTransaction(transactionId: number) {
 		return this.request<transaction>(`/transactions/${transactionId}`);
 	}
+
+	deleteTransaction(transactionId: number) {
+		return this.request<void>(`/transactions/${transactionId}/delete`, {
+			method: 'PATCH',
+		});
+	}
 }

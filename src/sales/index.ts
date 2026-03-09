@@ -1,35 +1,149 @@
 import { Base } from '../base';
+import { Pagination } from '../base';
+import {
+	attachment,
+	invoiceishDraftRequest,
+	invoiceishDraftResult,
+	payment,
+	saleRequest,
+	saleResult,
+} from '../schemas';
+
+type SalesParams = Pagination & {
+	date?: string;
+	dateLe?: string;
+	dateLt?: string;
+	dateGe?: string;
+	dateGt?: string;
+	lastModified?: string;
+	lastModifiedLe?: string;
+	lastModifiedLt?: string;
+	lastModifiedGe?: string;
+	lastModifiedGt?: string;
+	createdDate?: string;
+	createdDateLe?: string;
+	createdDateLt?: string;
+	createdDateGe?: string;
+	createdDateGt?: string;
+	settled?: boolean;
+};
+
+type DraftListParams = Pagination & {
+	lastModified?: string;
+	lastModifiedLe?: string;
+	lastModifiedLt?: string;
+	lastModifiedGe?: string;
+	lastModifiedGt?: string;
+};
+
+const resourceName = 'sales';
 
 export class Sales extends Base {
-	getSales() {}
+	getSales(params?: SalesParams) {
+		const query = new URLSearchParams(this.prepareParamsForURLSearch(params)).toString();
+		return this.request<saleResult[]>(`${resourceName}${query ? `?${query}` : ''}`);
+	}
 
-	createSale() {}
+	createSale(sale: saleRequest) {
+		return this.request<void>(resourceName, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(sale),
+		});
+	}
 
-	getSale() {}
+	getSale(saleId: number) {
+		return this.request<saleResult>(`${resourceName}/${saleId}`);
+	}
 
-	getSaleAttachments() {}
+	settledSale(saleId: number, settledDate: string) {
+		const query = new URLSearchParams({ settledDate }).toString();
+		return this.request<saleResult>(`${resourceName}/${saleId}/settled?${query}`, {
+			method: 'PATCH',
+		});
+	}
 
-	createSaleAttachment() {}
+	deleteSale(saleId: number, description: string) {
+		const query = new URLSearchParams({ description }).toString();
+		return this.request<saleResult>(`${resourceName}/${saleId}/delete?${query}`, {
+			method: 'PATCH',
+		});
+	}
 
-	getSalePayments() {}
+	getSaleAttachments(saleId: number) {
+		return this.request<attachment[]>(`${resourceName}/${saleId}/attachments`);
+	}
 
-	createSalePayment() {}
+	createSaleAttachment(saleId: number, formData: FormData) {
+		return this.request<void>(`${resourceName}/${saleId}/attachments`, {
+			method: 'POST',
+			body: formData,
+		});
+	}
 
-	getSalePayment() {}
+	getSalePayments(saleId: number) {
+		return this.request<payment[]>(`${resourceName}/${saleId}/payments`);
+	}
 
-	getSaleDrafts() {}
+	createSalePayment(saleId: number, salePayment: payment) {
+		return this.request<void>(`${resourceName}/${saleId}/payments`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(salePayment),
+		});
+	}
 
-	createSaleDraft() {}
+	getSalePayment(saleId: number, paymentId: number) {
+		return this.request<payment>(`${resourceName}/${saleId}/payments/${paymentId}`);
+	}
 
-	getSaleDraft() {}
+	getSaleDrafts(params?: DraftListParams) {
+		const query = new URLSearchParams(this.prepareParamsForURLSearch(params)).toString();
+		return this.request<invoiceishDraftResult[]>(
+			`${resourceName}/drafts${query ? `?${query}` : ''}`
+		);
+	}
 
-	updateSaleDraft() {}
+	createSaleDraft(draft: invoiceishDraftRequest) {
+		return this.request<void>(`${resourceName}/drafts`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(draft),
+		});
+	}
 
-	deleteSaleDraft() {}
+	getSaleDraft(draftId: number) {
+		return this.request<invoiceishDraftResult>(`${resourceName}/drafts/${draftId}`);
+	}
 
-	getSaleDraftAttachments() {}
+	updateSaleDraft(draftId: number, draft: invoiceishDraftRequest) {
+		return this.request<void>(`${resourceName}/drafts/${draftId}`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(draft),
+		});
+	}
 
-	createSaleDraftAttachment() {}
+	deleteSaleDraft(draftId: number) {
+		return this.request<void>(`${resourceName}/drafts/${draftId}`, {
+			method: 'DELETE',
+		});
+	}
 
-	createSaleFromDraft() {}
+	getSaleDraftAttachments(draftId: number) {
+		return this.request<attachment[]>(`${resourceName}/drafts/${draftId}/attachments`);
+	}
+
+	createSaleDraftAttachment(draftId: number, formData: FormData) {
+		return this.request<void>(`${resourceName}/drafts/${draftId}/attachments`, {
+			method: 'POST',
+			body: formData,
+		});
+	}
+
+	createSaleFromDraft(draftId: number) {
+		return this.request<void>(`${resourceName}/drafts/${draftId}/createSale`, {
+			method: 'POST',
+		});
+	}
 }

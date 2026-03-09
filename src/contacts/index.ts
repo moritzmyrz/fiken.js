@@ -30,14 +30,27 @@ export class Contacts extends Base {
 		});
 	}
 
+	deleteContact(contactId: number) {
+		return this.request<contact>(`/contacts/${contactId}`, {
+			method: 'DELETE',
+		});
+	}
+
 	getContactPersons(contactId: number) {
 		return this.request<contactPerson[]>(
 			`/contacts/${contactId}/contactPerson`
 		);
 	}
 
-	createContactPersonAttachment() {
-		throw new Error('Not implemented');
+	addAttachmentToContact(contactId: number, formData: FormData) {
+		return this.request<void>(`/contacts/${contactId}/attachments`, {
+			method: 'POST',
+			body: formData,
+		});
+	}
+
+	createContactPersonAttachment(contactId: number, formData: FormData) {
+		return this.addAttachmentToContact(contactId, formData);
 	}
 
 	getContactPerson(contactId: number, contactPersonId: number) {
