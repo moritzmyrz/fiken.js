@@ -32,8 +32,6 @@ const invoices = await client.getInvoices({ page: 1, pageSize: 50 });
 - Sales, purchases, inbox, projects
 - Time entries, activities, time users
 
-All endpoints are based on the published Fiken OpenAPI document in this repository (`swagger (2).yaml`).
-
 ## Development
 
 ```bash
