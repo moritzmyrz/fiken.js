@@ -681,6 +681,7 @@ export interface sendInvoiceishRequest {
 	method: invoiceDeliveryMethods;
 	includeDocumentAttachments: boolean;
 
+	recipientName?: string;
 	receipentName?: string;
 	recipientEmail?: string;
 	message?: string;
@@ -695,6 +696,7 @@ export interface sendInvoiceRequest {
 	includeDocumentAttachments: boolean;
 	creditNoteId: number;
 
+	recipientName?: string;
 	receipentName?: string;
 	recipientEmail?: string;
 	message?: string;
@@ -709,6 +711,7 @@ export interface sendInvoiceResult {
 	includeDocumentAttachments: boolean;
 	invoiceId: number;
 
+	recipientName?: string;
 	receipentName?: string;
 	recipientEmail?: string;
 	message?: string;

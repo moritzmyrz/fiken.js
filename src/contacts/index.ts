@@ -16,9 +16,15 @@ type ContactsParams = Pagination & {
 	supplierNumber?: number;
 	customerNumber?: number;
 	organizationNumber?: string;
-	memberNumber?: string;
+	memberNumber?: number;
+	memberNumberString?: string;
 	name?: string;
 	email?: string;
+	customer?: boolean;
+	supplier?: boolean;
+	inactive?: boolean;
+	group?: string;
+	sortBy?: string;
 };
 
 export class Contacts extends Base {

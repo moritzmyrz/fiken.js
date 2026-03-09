@@ -22,12 +22,16 @@ type InvoiceListParams = Pagination & {
 	lastModifiedLt?: string;
 	lastModifiedGe?: string;
 	lastModifiedGt?: string;
-	createdDate?: string;
-	createdDateLe?: string;
-	createdDateLt?: string;
-	createdDateGe?: string;
-	createdDateGt?: string;
+	dueDate?: string;
+	dueDateLe?: string;
+	dueDateLt?: string;
+	dueDateGe?: string;
+	dueDateGt?: string;
+	customerId?: number;
 	settled?: boolean;
+	orderReference?: string;
+	invoiceDraftUuid?: string;
+	invoiceNumber?: string;
 };
 
 type DraftListParams = Pagination & {
