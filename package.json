@@ -1,7 +1,7 @@
 {
 	"name": "fiken.js",
 	"version": "2.1.0",
-	"description": "",
+	"description": "TypeScript wrapper for the Fiken API v2.",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"module": "dist/index.m.js",
