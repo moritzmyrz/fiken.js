@@ -2,12 +2,13 @@ import { Base } from '../base';
 import { bankAccountRequest, bankAccountResult } from '../schemas';
 import { BankAccountsParams } from './types';
 
-const resourceName = 'bankaccounts';
+const resourceName = 'bankAccounts';
 
 export class BankAccounts extends Base {
 	getBankAccounts(params?: BankAccountsParams) {
 		const searchParams = this.prepareParamsForURLSearch(params);
-		const queryString = `?${new URLSearchParams(searchParams).toString()}`;
+		const query = new URLSearchParams(searchParams).toString();
+		const queryString = query ? `?${query}` : '';
 
 		return this.request<bankAccountResult[]>(resourceName + queryString);
 	}

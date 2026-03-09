@@ -21,9 +21,14 @@ import { applyMixins } from './utils';
 class Fiken extends Base {
 	getCompanies(params?: CompaniesParams) {
 		const searchParams = this.prepareParamsForURLSearch(params);
-		const queryString = `?${new URLSearchParams(searchParams).toString()}`;
+		const query = new URLSearchParams(searchParams).toString();
+		const queryString = query ? `?${query}` : '';
 
-		return this.request<company[]>(queryString);
+		return this.requestRoot<company[]>(`companies${queryString}`);
+	}
+
+	getCompany(companySlug: string) {
+		return this.requestRoot<company>(`companies/${companySlug}`);
 	}
 }
 

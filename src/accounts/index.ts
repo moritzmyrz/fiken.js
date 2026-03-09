@@ -7,7 +7,8 @@ const resourceName = 'accounts';
 export class Accounts extends Base {
 	getAccounts(params?: AccountsParams) {
 		const searchParams = this.prepareParamsForURLSearch(params);
-		const queryString = `?${new URLSearchParams(searchParams).toString()}`;
+		const query = new URLSearchParams(searchParams).toString();
+		const queryString = query ? `?${query}` : '';
 
 		return this.request<account[]>(resourceName + queryString);
 	}
